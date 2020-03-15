@@ -40,7 +40,7 @@ const validFileType = (file, types) => {
 export default class File {
 	constructor(element, options = {}) {
 		this.rootElement = element;
-		this.options = Object.assign({}, optionsDefault, options);
+		this.options = { ...optionsDefault, ...options };
 	}
 
 	init() {
