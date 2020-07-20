@@ -3,16 +3,10 @@ const optionsDefault = {
 	messages: {
 		invalidSize: 'Le poids de votre fichier est trop lourd',
 		invalidType: 'Le type de votre fichier est incorrect',
-		invalidFile: 'Aucun fichier n\'a été sélectionné',
+		invalidFile: "Aucun fichier n'a été sélectionné",
 	},
-	types: [
-		'image/jpeg',
-		'image/jpg',
-		'image/png',
-		'application/pdf',
-	],
+	types: ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'],
 };
-
 
 const fileSize = number => {
 	// 1048576 <= number
@@ -80,7 +74,9 @@ export default class File {
 		}
 
 		if (files[0].size > this.options.size) {
-			this.$information.innerHTML = `${this.options.messages.invalidSize} (${fileSize(files[0].size)})`;
+			this.$information.innerHTML = `${this.options.messages.invalidSize} (${fileSize(
+				files[0].size,
+			)})`;
 			this.rootElement.setAttribute('aria-invalid', true);
 
 			return false;
