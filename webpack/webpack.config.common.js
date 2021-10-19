@@ -1,20 +1,16 @@
 /**
  *
- * @file webpack.common.js
- * @author Jérémy Levron <jeremylevron@19h47.fr> (https://19h47.fr)
+ * @file webpack.config.common.js
+ * @author Jérémy Levron <jeremylevron@19h47.fr> (http://19h47.fr)
  */
-
-// Node modules
-const path = require('path');
 
 // Plugins
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
-function resolve(dir) {
-	return path.join(__dirname, '..', dir);
-}
+const resolve = require('./webpack.utils');
 
 module.exports = {
 	entry: {
@@ -22,25 +18,28 @@ module.exports = {
 		docs: resolve('src/index.js'),
 	},
 	output: {
+		path: resolve('/dist'),
 		library: 'File',
 		libraryTarget: 'umd',
 		filename: '../[name]/main.js',
 	},
 	devServer: {
-		contentBase: resolve('/'),
+		static: [
+			resolve('/')
+		],
 		compress: true,
 		port: 3000,
-		inline: true,
-		disableHostCheck: true,
+		// firewall: true,
+		// writeToDisk: true,
+	},
+	resolve: {
+		alias: {
+			'@': resolve('src'),
+			Utils: resolve('src/utils'),
+		},
 	},
 	module: {
 		rules: [
-			{
-				enforce: 'pre',
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'eslint-loader',
-			},
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
@@ -62,5 +61,6 @@ module.exports = {
 			excludeWarnings: true,
 			alwaysNotify: true,
 		}),
+		new ESLintPlugin()
 	],
 };
