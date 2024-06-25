@@ -30,14 +30,29 @@
 			</div>
 			<small class="form-text text-muted">.jpg, .jpeg, .png, .pdf are accepted file type. The size of your file must not exceed 2 Mo.</small>
 		</div>
+		<div class="col-12 my-5">
+			<div class="input-group js-file" role="button" tabindex="0">
+				<label class="input-group-prepend" for="resume">
+					<div class="input-group-text">Resume</div>
+				</label>
+				<div class="form-control js-information">No file chosen</div>
+
+				<div class="d-none">
+					<input type="file" name="file" id="resume">
+				</div>
+			</div>
+			<small class="form-text text-muted">.jpg, .jpeg, .png, .pdf are accepted file type. The size of your file must not exceed 2 Mo.</small>
+		</div>
 	</div>
 
 	<script type="text/javascript" src="./main.js"></script>
 	<script>
-		const $element = document.querySelector('.js-file');
+		const elements = document.querySelectorAll('.js-file');
 
-		const file = new File.default($element);
-		file.init();
+		elements.forEach($el => {
+			// const file = new File.default($el);
+			// file.init();
+		})
 	</script>
 
 </body>

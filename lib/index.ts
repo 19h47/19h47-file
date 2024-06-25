@@ -8,7 +8,14 @@ const optionsDefault = {
 	types: ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'],
 };
 
-const fileSize = (number: number) => {
+/**
+ * fileSize
+ *
+ * @param number
+ *
+ * @returns string
+ */
+const fileSize = (number: number): string => {
 	// 1048576 <= number
 	let size = `${(number / 1048576).toFixed(1)} Mo`;
 
@@ -21,7 +28,14 @@ const fileSize = (number: number) => {
 	return size;
 };
 
-const validFileType = (file: File, types: string[]) => {
+/**
+ * validFileType
+ *
+ * @param file
+ * @param types
+ * @returns
+ */
+const validFileType = (file: File, types: string[]): boolean => {
 	for (let i = 0; i < types.length; i += 1) {
 		if (file.type === types[i]) {
 			return true;
@@ -68,10 +82,12 @@ export default class InputFile {
 
 	initEvents() {
 		(this.el as HTMLElement).addEventListener('click', () => this.$input && this.$input.click());
-		(this.$input as HTMLInputElement).addEventListener('change', () => this.change());
+		(this.$input as HTMLInputElement).addEventListener('change', (event) => this.change(event));
 	}
 
-	change() {
+	change(event: Event) {
+		event.preventDefault();
+
 		const { files } = <HTMLInputElement>this.$input;
 
 		if (null === files || undefined === files[0]) {
