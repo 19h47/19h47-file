@@ -1,7 +1,8 @@
 /**
+ * Common
  *
  * @file webpack.config.common.js
- * @author Jérémy Levron <jeremylevron@19h47.fr> (http://19h47.fr)
+ * @author Jérémy Levron <jeremylevron@19h47.fr> (https://19h47.fr)
  */
 
 // Plugins
@@ -14,8 +15,8 @@ const resolve = require('./webpack.utils');
 
 module.exports = {
 	entry: {
-		dist: resolve('src/index.js'),
-		docs: resolve('src/index.js'),
+		dist: resolve('lib/index.ts'),
+		docs: resolve('lib/index.ts'),
 	},
 	output: {
 		path: resolve('/dist'),
@@ -24,15 +25,12 @@ module.exports = {
 		filename: '../[name]/main.js',
 	},
 	devServer: {
-		static: [
-			resolve('/')
-		],
-		compress: true,
 		port: 3000,
-		// firewall: true,
-		// writeToDisk: true,
+		static: [resolve('/')],
+		compress: true,
 	},
 	resolve: {
+		extensions: ['.ts', '.tsx', '.js'],
 		alias: {
 			'@': resolve('src'),
 			Utils: resolve('src/utils'),
@@ -41,9 +39,9 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
+				test: /\.tsx?$/,
+				use: 'ts-loader',
 				exclude: /node_modules/,
-				loader: 'babel-loader',
 			},
 		],
 	},
@@ -55,6 +53,7 @@ module.exports = {
 			filename: resolve('docs/index.html'),
 			template: resolve('index.html'),
 			inject: false,
+			minify: { removeRedundantAttributes: false },
 		}),
 		new WebpackNotifierPlugin({
 			title: 'Webpack',
