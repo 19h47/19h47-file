@@ -70,6 +70,8 @@ export default class InputFile {
 
 		this.$input = this.el.querySelector('[type=file]');
 		this.$information = this.el.querySelector('.js-information');
+
+		this.$input?.style.setProperty('pointer-events', 'none');
 	}
 
 	init() {
@@ -80,14 +82,31 @@ export default class InputFile {
 		this.initEvents();
 	}
 
+	/**
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/labels
+	 */
 	initEvents() {
-		(this.el as HTMLElement).addEventListener('click', () => this.$input && this.$input.click());
-		(this.$input as HTMLInputElement).addEventListener('change', (event) => this.change(event));
+		(this.el as HTMLElement).addEventListener('click', (event) => {
+			event.stopPropagation();
+			this.$input && this.$input.click();
+		});
+
+		(this.el as HTMLElement).addEventListener('keydown', (event) => {
+			if ('Enter' === event.key) {
+				this.$input && this.$input.click();
+			}
+		});
+
+		(this.$input as HTMLInputElement).addEventListener('change', () => { this.change() });
+
+		[...((this.$input as HTMLInputElement).labels as NodeList)].forEach($label => {
+			$label.addEventListener('click', (event) => {
+				event.preventDefault();
+			});
+		});
 	}
 
-	change(event: Event) {
-		event.preventDefault();
-
+	change() {
 		const { files } = <HTMLInputElement>this.$input;
 
 		if (null === files || undefined === files[0]) {
